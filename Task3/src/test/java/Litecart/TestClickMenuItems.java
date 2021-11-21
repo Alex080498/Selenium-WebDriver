@@ -36,6 +36,7 @@ public class TestClickMenuItems {
         for (int i=0; i<numberOfMenuElements; i++) {
             elementList = driver.findElements(By.cssSelector("#box-apps-menu a"));
                     elementList.get(i).click();
+            driver.getTitle();
         }
 
     }
