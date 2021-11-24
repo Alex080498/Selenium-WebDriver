@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -19,7 +20,6 @@ public class TestProductsStickers {
 
     @Before
     public void start() {
-        System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromeDriver\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 10);
@@ -28,16 +28,11 @@ public class TestProductsStickers {
     @Test
     public void mainTest() {
         driver.get("http://localhost/litecart/");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".listing-wrapper")));
         List<WebElement> productsList = driver.findElements(By.cssSelector("li.product"));
-        int numberOfProducts = productsList.size();
-        for (int i = 0; i < numberOfProducts; i++) {
-            WebElement sticker = driver.findElement(By.cssSelector("div.sticker"));
-            Assert.assertEquals(true, sticker.isDisplayed());
+        for (WebElement product : productsList) {
+            Assert.assertEquals(product.findElements(By.cssSelector("div.sticker")).size(), 1);
         }
-        System.out.println(numberOfProducts);
-        List<WebElement> stickerCount = driver.findElements(By.cssSelector("div.sticker"));
-        int numberOfStickers = stickerCount.size();
-        System.out.println(numberOfStickers);
     }
 
     @After
