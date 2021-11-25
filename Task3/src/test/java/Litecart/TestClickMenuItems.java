@@ -1,6 +1,7 @@
 package Litecart;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -19,30 +20,40 @@ public class TestClickMenuItems {
 
     @Before
     public void start() {
-        System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromeDriver\\chromedriver.exe");
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 10);
     }
+
     @Test
-    public void mainTest () {
+    public void mainTest() {
         driver.get("http://localhost/litecart/admin/");
         driver.findElement(By.xpath("//input[@name=\"username\"]")).sendKeys("admin");
         driver.findElement(By.xpath("//input[@name=\"password\"]")).sendKeys("admin");
         driver.findElement(By.xpath("//button[@name=\"login\"]")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@id=\"sidebar\"]")));
-        List<WebElement> elementList = driver.findElements(By.cssSelector("#box-apps-menu a"));
+
+        List<WebElement> elementList = driver.findElements(By.cssSelector("#app-"));
         int numberOfMenuElements = elementList.size();
-        for (int i=0; i<numberOfMenuElements; i++) {
-            elementList = driver.findElements(By.cssSelector("#box-apps-menu a"));
-                    elementList.get(i).click();
-            driver.getTitle();
+        for (int i = 0; i < numberOfMenuElements; i++) {
+            elementList = driver.findElements(By.cssSelector("#app-"));
+            elementList.get(i).click();
+            Assert.assertTrue(driver.findElement(By.tagName("h1")).isDisplayed());
+
+            List<WebElement> subMenuElementsList = driver.findElements(By.cssSelector(".docs>li"));
+            int numberOfsubMenuElements = subMenuElementsList.size();
+            for (int j = 0; j < numberOfsubMenuElements; j++) {
+                subMenuElementsList = driver.findElements(By.cssSelector(".docs>li"));
+                subMenuElementsList.get(j).click();
+                Assert.assertTrue(driver.findElement(By.tagName("h1")).isDisplayed());
+            }
+
+        }
+    }
+        @After
+        public void stop () {
+            driver.quit();
+            driver = null;
         }
 
-    }
-    @After
-    public void stop () {
-        driver.quit();
-        driver=null;
-    }
 }
