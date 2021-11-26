@@ -23,8 +23,8 @@ public class TestZonesAreSortedAlphabetically {
     @Before
     public void start() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 10);
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, 2);
     }
 
     @Test
@@ -37,11 +37,10 @@ public class TestZonesAreSortedAlphabetically {
         driver.findElement(By.xpath("//span[contains(text(),'Geo')]")).click();
         List<WebElement> countries = driver.findElements(By.xpath("//tr[@class=\"row\"]//td[position()=3]"));
         int zonesQuantity = countries.size();
-        int i;
-        for (i=0;i<zonesQuantity;i++) {
-            driver.findElement(By.xpath("//tr[@class=\"row\"]//td[position()=3]//a")).click();
+        for (int i=0;i<zonesQuantity;i++) {
+            driver.findElements(By.xpath("//tr[@class=\"row\"]//td[position()=3]//a")).get(i).click();
             ArrayList<String> countriesZones = new ArrayList<>();
-            List <WebElement> zones = driver.findElements(By.xpath("//select[contains(@name,'zone_code')]"));
+            List <WebElement> zones = driver.findElements(By.xpath("//select[contains(@name,'zone_code')]//option[@selected=\"selected\"]"));
             for (WebElement zone : zones) {
                 countriesZones.add(zone.getText());
             }
@@ -52,7 +51,7 @@ public class TestZonesAreSortedAlphabetically {
             Collections.sort(sortedCountriesZones);
             System.out.println(countriesZones);
             System.out.println(sortedCountriesZones);
-            Assert.assertTrue(sortedCountriesZones.equals(countriesZones));
+            Assert.assertTrue(countriesZones.equals(sortedCountriesZones));
             driver.navigate().back();
         }
 
