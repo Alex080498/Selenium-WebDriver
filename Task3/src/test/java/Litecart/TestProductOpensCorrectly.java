@@ -15,7 +15,7 @@ public class TestProductOpensCorrectly {
     private WebDriver driver;
     private WebDriverWait wait;
 
-
+//in Chrome
     @Before
     public void start() {
         driver = new ChromeDriver();
