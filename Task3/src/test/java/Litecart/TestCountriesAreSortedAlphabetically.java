@@ -54,7 +54,8 @@ public class TestCountriesAreSortedAlphabetically {
          int zonesListCount = zonesList.size();
          int i;
          for (i=0;i<zonesListCount;i++) {
-             if(!driver.findElements(By.xpath("//tr[@class=\"row\"]//td[position()=6]")).get(i).getText().equals("0")) {
+             List<WebElement> quantity = driver.findElements(By.xpath("//tr[@class=\"row\"]//td[position()=6]"));
+             if(!quantity.get(i).getText().equals("0")) {
                  driver.findElements(By.xpath("//tr[@class=\"row\"]//td[position()=5]//a")).get(i).click();
                  ArrayList<String> allZoneslList = new ArrayList<>();
                  List<WebElement> listOfAllZones = driver.findElements(By.xpath("//input[contains(@name,'zones') and contains(@name,'name')]"));
