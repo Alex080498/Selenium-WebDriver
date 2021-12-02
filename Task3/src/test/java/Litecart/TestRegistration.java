@@ -4,9 +4,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,9 +26,10 @@ public class TestRegistration {
 
     @Before
     public void start() {
-        driver = new ChromeDriver();
+        driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 10);
+
     }
 
     @Test
@@ -39,13 +43,14 @@ public class TestRegistration {
         driver.findElement(By.xpath("//input[@name=\"postcode\"]")).sendKeys("12345");
         driver.findElement(By.xpath("//input[@name=\"city\"]")).sendKeys("London");
 
-        WebElement country = driver.findElement(By.xpath("//select[@name=\"country_code\"]"));
-        Select sel = new Select(country);
-        sel.selectByValue("US");
+        driver.findElement(By.className("select2-selection__rendered")).click();
+        driver.findElements(By.xpath("//li[contains(.,'United States')]")).get(0).click();
         Assert.assertTrue(driver.findElement(By.xpath("//select[@name=\"zone_code\"]")).isDisplayed());
         WebElement zone = driver.findElement(By.xpath("//select[@name=\"zone_code\"]"));
         Select zoneSel = new Select(zone);
         zoneSel.selectByValue("AK");
+
+
         Random randomEmail = new Random();
         int randomNumber = randomEmail.nextInt(1000);
         String personalEmail = "user" + randomNumber + "@gmail.com";
