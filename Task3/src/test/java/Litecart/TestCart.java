@@ -38,7 +38,7 @@ public class TestCart {
             driver.findElement(By.xpath("//li[@class=\"product column shadow hover-light\"]")).click();
             // WebElement size = driver.findElement(By.xpath("//select[@name=\"options[Size]\"]"));
             //  if (Assert.assertTrue(size.isDisplayed()));
-            if (driver.findElement(By.xpath("//select[@name=\"options[Size]\"]")).isDisplayed() == true) {
+            if (driver.findElements(By.xpath("//select[@name=\"options[Size]\"]")).size() > 0) {
                 WebElement size = driver.findElement(By.xpath("//select[@name=\"options[Size]\"]"));
                 Select sizeProduct = new Select(size);
                 sizeProduct.selectByValue("Small");
@@ -48,17 +48,16 @@ public class TestCart {
                 wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.className("content")), "" + (i + 1)));
                 driver.navigate().back();
             }
-            driver.findElement(By.xpath("//a[@href=\"http://localhost/litecart/en/checkout\"]")).click();
-            List<WebElement> products = driver.findElements(By.xpath("//li[@class=\"shortcut\"]"));
-            int productsCount = products.size();
-            int j;
-            for (j = 0; j < productsCount; j--) {
-                driver.findElement(By.xpath("//li[@class=\"shortcut\"]")).click();
+        }
+            driver.findElement(By.xpath("//div[@id=\"cart\"]//a[@class=\"content\"]")).click();
+
+        while(driver.findElements(By.xpath("//button[@name=\"remove_cart_item\"]")).size() != 0){
                 driver.findElement(By.xpath("//button[@name=\"remove_cart_item\"]")).click();
+            wait.until(ExpectedConditions.stalenessOf(driver.findElement(By.xpath("//button[@name=\"remove_cart_item\"]"))));
             }
             Assert.assertTrue(driver.findElement(By.id("checkout-cart-wrapper")).getText().contains("There are no items in your cart."));
         }
-    }
+
         @After
         public void stop () {
             driver.quit();
