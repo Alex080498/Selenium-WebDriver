@@ -52,8 +52,9 @@ public class TestCart {
             driver.findElement(By.xpath("//div[@id=\"cart\"]//a[@class=\"content\"]")).click();
 
         while(driver.findElements(By.xpath("//button[@name=\"remove_cart_item\"]")).size() != 0){
-                driver.findElement(By.xpath("//button[@name=\"remove_cart_item\"]")).click();
-            wait.until(ExpectedConditions.stalenessOf(driver.findElement(By.xpath("//button[@name=\"remove_cart_item\"]"))));
+               WebElement button = driver.findElement(By.xpath("//button[@name=\"remove_cart_item\"]"));
+               button.click();
+            wait.until(ExpectedConditions.stalenessOf(button));
             }
             Assert.assertTrue(driver.findElement(By.id("checkout-cart-wrapper")).getText().contains("There are no items in your cart."));
         }
